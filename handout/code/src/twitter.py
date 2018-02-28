@@ -154,7 +154,19 @@ def performance(y_true, y_pred, metric="accuracy"):
     
     ### ========== TODO : START ========== ###
     # part 2a: compute classifier performance
-    return 0
+
+    # if metric chosen is accuracy
+    if metric == "accuracy":
+        return metrics.accuracy_score(y_true, y_label)
+    
+    elif metric == "f1-score":
+        return metrics.f1_score(y_true, y_label)
+    
+    elif metric == "auroc":
+        return metrics.roc_auc_score(y_true, y_pred)
+    else:
+        return -1
+
     ### ========== TODO : END ========== ###
 
 
@@ -179,10 +191,19 @@ def cv_performance(clf, X, y, kf, metric="accuracy"):
     --------------------
         score   -- float, average cross-validation performance across k folds
     """
-    
+
     ### ========== TODO : START ========== ###
     # part 2b: compute average cross-validation performance    
-    return 0
+    accuracy_list = []
+
+    for train, test in kf:
+        
+        clf.fit(X[train], y[train])
+        predictions = clf.decision_function(X[test])
+        accuracy_list.append(performance(y[test], predictions, metric)
+
+    return sum(accuracy_list)/float(len(accuracy_list))
+
     ### ========== TODO : END ========== ###
 
 
