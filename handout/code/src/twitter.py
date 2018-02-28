@@ -6,6 +6,7 @@ Description : Twitter
 from string import punctuation
 
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 # !!! MAKE SURE TO USE SVC.decision_function(X), NOT SVC.predict(X) !!!
 # (this makes ``continuous-valued'' predictions)
@@ -252,17 +253,27 @@ def main() :
     # read the tweets and its labels   
     dictionary = extract_dictionary('../data/tweets.txt')
 
-    print dictionary
+    # print dictionary
 
     X = extract_feature_vectors('../data/tweets.txt', dictionary)
 
-    # y = read_vector_file('../data/labels.txt')
+    y = read_vector_file('../data/labels.txt')
     
     metric_list = ["accuracy", "f1_score", "auroc"]
     
+    # Get shape of feature matrix
+    n, d = X.shape
+    print ('Feature matrix is a %dx%d matrix' % (n, d))
+
+
     ### ========== TODO : START ========== ###
     # part 1: split data into training (training + cross-validation) and testing set
     
+    # split data into train and test sets 
+    # make sure shuffle is false  
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = float(560)/630, shuffle = False)
+
     # part 2: create stratified folds (5-fold CV)
     
     # part 2: for each metric, select optimal hyperparameter for linear-kernel SVM using CV
