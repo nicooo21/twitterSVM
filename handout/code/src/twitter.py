@@ -200,7 +200,7 @@ def cv_performance(clf, X, y, kf, metric="accuracy"):
         
         clf.fit(X[train], y[train])
         predictions = clf.decision_function(X[test])
-        accuracy_list.append(performance(y[test], predictions, metric)
+        accuracy_list.append(performance(y[test], predictions, metric))
 
     return sum(accuracy_list)/float(len(accuracy_list))
 
@@ -229,10 +229,19 @@ def select_param_linear(X, y, kf, metric="accuracy"):
     
     print 'Linear SVM Hyperparameter Selection based on ' + str(metric) + ':'
     C_range = 10.0 ** np.arange(-3, 3)
+    max_score = -1
+    best_c = -1
+
+    for c in range(0, C_range):
+        clf = SVC(kernel='linear', C=c)
+        cur_perf = cv_performance(clf, X, y, kf, metric)
+        if cur_perf > max_score:
+            max_score = cur_perf
+            best_c = c
     
     ### ========== TODO : START ========== ###
     # part 2: select optimal hyperparameter using cross-validation
-    return 1.0
+    return c
     ### ========== TODO : END ========== ###
 
 
