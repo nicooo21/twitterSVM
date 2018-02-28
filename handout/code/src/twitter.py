@@ -114,7 +114,14 @@ def extract_feature_vectors(infile, word_list):
     with open(infile, 'rU') as fid :
         ### ========== TODO : START ========== ###
         # part 1b: process each line to populate feature_matrix
-        pass
+        for num, line in enumerate(fid, 0):
+            # extract words from line in tweet file
+            extracted_words = extract_words(line)
+
+            # populate feature in each row
+            for word in extracted_words:
+                feature_matrix[num][word_list[word]] = 1
+
         ### ========== TODO : END ========== ###
         
     return feature_matrix
@@ -244,7 +251,11 @@ def main() :
     
     # read the tweets and its labels   
     dictionary = extract_dictionary('../data/tweets.txt')
-    # X = extract_feature_vectors('../data/tweets.txt', dictionary)
+
+    print dictionary
+
+    X = extract_feature_vectors('../data/tweets.txt', dictionary)
+
     # y = read_vector_file('../data/labels.txt')
     
     metric_list = ["accuracy", "f1_score", "auroc"]
